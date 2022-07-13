@@ -23,6 +23,7 @@ public class Answer1 {
         return csvLines.stream()
                 .map(line -> line[1].replaceAll("\\s", ""))
                 .flatMap(hobbies -> Arrays.stream(hobbies.split(":")))
+                .peek(s-> System.out.println(s))
                 .collect(Collectors.toMap(hobby -> hobby, hobby -> 1, (oldValue, newValue) -> newValue += oldValue));
     }
 
@@ -54,6 +55,13 @@ public class Answer1 {
             return 1 + countContains(src, index + TARGET_LENGTH);
         }
         return 0;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Answer1 a = new Answer1();
+        Map<String, Integer> m = a.quiz1();
+        System.out.println("here!!!!!");
+
     }
 
 }
