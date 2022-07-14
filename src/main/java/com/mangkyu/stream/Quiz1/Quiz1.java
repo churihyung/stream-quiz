@@ -4,10 +4,7 @@ import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,8 +16,8 @@ public class Quiz1 {
         Stream<String[]> stream = csvLines.stream();
         return stream.map(line -> line[1].replaceAll("\\s", ""))
                 .flatMap(hobbies-> Arrays.stream(hobbies.split(":")))
-                .peek(s -> System.out.println(s))
-                .collect(Collectors.toMap(hobby -> hobby, hobby -> 1, (oldValue, newValue) -> newValue += oldValue));
+//                .peek(s -> System.out.println(s))
+                .collect(Collectors.toMap(hobby -> hobby, hobby -> 1, (oldValue, newValue) -> ++oldValue));
     }
 
     public Map<String, Integer> quiz2() throws IOException {
@@ -41,7 +38,11 @@ public class Quiz1 {
 
     public static void main(String[] args) throws IOException {
         Quiz1 q = new Quiz1();
-        q.quiz1();
+        Map<String, Integer> stringIntegerMap = q.quiz1();
+        Set<String> strings = stringIntegerMap.keySet();
+        for (String string : strings) {
+            System.out.println("key : "+ string + "  value : " + stringIntegerMap.get(string));
+        }
     }
 
 }
