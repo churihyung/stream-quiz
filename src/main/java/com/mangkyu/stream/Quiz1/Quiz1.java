@@ -2,8 +2,7 @@ package com.mangkyu.stream.Quiz1;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,13 +10,19 @@ import java.util.stream.Stream;
 public class Quiz1 {
 
     public Map<String, Integer> quiz1() throws IOException {
+        HashMap<String, Integer> map = new HashMap<>();
         List<String[]> csvLines = readCsvLines();
 
         Stream<String[]> stream = csvLines.stream();
-        return stream.map(line -> line[1].replaceAll("\\s", ""))
-                .flatMap(hobbies-> Arrays.stream(hobbies.split(":")))
-//                .peek(s -> System.out.println(s))
-                .collect(Collectors.toMap(hobby -> hobby, hobby -> 1, (oldValue, newValue) -> ++oldValue));
+        List<String> list = stream.map(line -> line[1].replaceAll("\\s", ""))
+                .flatMap(hobbies -> Arrays.stream(hobbies.split(":")))
+                .collect(Collectors.toList());
+
+        for (String s : list) {
+            map.put(s, map.getOrDefault(s,0)+1);
+        }
+        return map;
+
     }
 
     public Map<String, Integer> quiz2() throws IOException {
@@ -30,10 +35,30 @@ public class Quiz1 {
         return 0;
     }
 
-    private List<String[]> readCsvLines() throws IOException {
-        CSVReader csvReader = new CSVReader(new FileReader(getClass().getResource("/user.csv").getFile()));
-        csvReader.readNext();
-        return csvReader.readAll();
+    private List<String[]> readCsvLines()  {
+
+//        CSVReader csvReader = new CSVReader(new FileReader(getClass().getResource("/user.csv").getFile()));
+//        csvReader.readNext();
+//        return csvReader.readAll();
+
+        List<String[]> lines = new ArrayList<>();
+
+        File csvFile = new File("D:\\github\\stream-quiz\\src\\main\\resources\\user.csv");
+
+
+        try(BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+//            br = new BufferedReader(new FileReader(csvFile));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                lines.add(line.split(","));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+
     }
 
     public static void main(String[] args) throws IOException {
