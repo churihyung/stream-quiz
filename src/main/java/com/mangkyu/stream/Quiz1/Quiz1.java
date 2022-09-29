@@ -1,8 +1,9 @@
 package com.mangkyu.stream.Quiz1;
 
-import com.opencsv.CSVReader;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,18 +38,18 @@ public class Quiz1 {
 
     private List<String[]> readCsvLines()  {
 
-//        CSVReader csvReader = new CSVReader(new FileReader(getClass().getResource("/user.csv").getFile()));
-//        csvReader.readNext();
-//        return csvReader.readAll();
-
         List<String[]> lines = new ArrayList<>();
+        Optional<URL> resource = Optional.ofNullable(getClass().getResource("/test.html"));
+        Optional<String> s = resource.map(URL::getFile);
+        String result = s.orElse("csv파일 없음");
+        System.out.println("===================" + result);
 
-        File csvFile = new File("D:\\github\\stream-quiz\\src\\main\\resources\\user.csv");
+        File csvFile = new File(getClass().getResource("/user.csv").getFile());
 
 
         try(BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-//            br = new BufferedReader(new FileReader(csvFile));
             String line = "";
+            br.readLine();
             while ((line = br.readLine()) != null) {
                 lines.add(line.split(","));
             }
