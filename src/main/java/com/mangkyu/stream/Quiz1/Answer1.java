@@ -59,7 +59,7 @@ public class Answer1 {
 
     public static void main(String[] args) throws IOException {
         Answer1 a = new Answer1();
-        Map<String, Integer> m = a.quiz1();
+        int i = a.quiz3();
         System.out.println("here!!!!!");
 
     }
