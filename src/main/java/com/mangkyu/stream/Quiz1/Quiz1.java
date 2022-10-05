@@ -33,18 +33,15 @@ public class Quiz1 {
     }
 
     public int quiz3() throws IOException {
-        log.info("get connection");
         log.info("quiz3 start");
         List<String[]> csvLines = readCsvLines();
-        csvLines.stream()
+        return csvLines.stream()
                 .map(t -> countTargetWord(t[2], 0))
-                .peek(System.out::println)
-                ;
-        return 0;
+                .peek(t-> System.out.println("t = " + t))
+                .reduce(0, Integer::sum);
     }
 
     private Integer countTargetWord(String target, int fromIndex) {
-        System.out.println("");
         int index = target.indexOf(TARGET, fromIndex);
         if (index > 0) {
             return 1 + countTargetWord(target, index + TARGET.length());
@@ -73,7 +70,7 @@ public class Quiz1 {
 
     public static void main(String[] args) throws IOException {
         Quiz1 q = new Quiz1();
-        int i = q.quiz3();
+        System.out.println(q.quiz3());
     }
 
 }
